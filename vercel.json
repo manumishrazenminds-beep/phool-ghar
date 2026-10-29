@@ -1,7 +1,7 @@
 {
-  "installCommand": "npm install --prefix web",
-  "buildCommand": "npm run build --prefix web",
-  "outputDirectory": "web/dist",
+  "installCommand": "if [ -f package.json ]; then npm install; else npm install --prefix web; fi",
+  "buildCommand": "if [ -f package.json ]; then npm run build; else npm run build --prefix web && rm -rf dist && mkdir -p dist && cp -R web/dist/. dist/; fi",
+  "outputDirectory": "dist",
   "framework": "vite",
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
