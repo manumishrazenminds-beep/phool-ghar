@@ -1,0 +1,199 @@
+@import "tailwindcss";
+@import "@fontsource/instrument-serif/400.css";
+@import "@fontsource/instrument-serif/400-italic.css";
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/jetbrains-mono";
+
+@theme {
+  --font-display: "Instrument Serif", Georgia, serif;
+  --font-sans: "Inter Variable", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, monospace;
+
+  --color-cream: #fbf5ea;
+  --color-cream-2: #f4ead8;
+  --color-ink: #1f1a17;
+  --color-ink-soft: #5b5149;
+  --color-marigold: #e8731a;
+  --color-marigold-deep: #c75a0a;
+  --color-saffron: #f6b33c;
+  --color-rose: #7a1f45;
+  --color-rose-soft: #f3d9df;
+  --color-leaf: #1f3d2b;
+  --color-leaf-soft: #dfe9d9;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html {
+  scroll-behavior: auto;
+}
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+body {
+  background: var(--color-cream);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "cv11", "ss03";
+  font-variant-numeric: tabular-nums;
+  overflow-x: clip;
+}
+
+::selection {
+  background: var(--color-marigold);
+  color: white;
+}
+
+/* Instrument Serif is single-weight: size and italics carry the hierarchy */
+.font-display {
+  font-weight: 400;
+  letter-spacing: -0.012em;
+  line-height: 1.04;
+}
+.font-display em,
+.font-display .italic {
+  font-style: italic;
+}
+h1, h2, h3 {
+  text-wrap: balance;
+}
+p {
+  text-wrap: pretty;
+}
+:focus-visible {
+  outline: 2px solid var(--color-marigold);
+  outline-offset: 3px;
+}
+
+/* subtle paper grain over the whole page */
+.grain::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 60;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee-track {
+  animation: marquee 40s linear infinite;
+}
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+@keyframes drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate3d(0, -14px, 0) rotate(6deg);
+  }
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
+}
+
+/* hand-inked wobble on the illustrated story, desktop only (filters are costly on phones) */
+@media (hover: hover) and (pointer: fine) {
+  .rough-lines {
+    filter: url(#rough);
+  }
+}
+
+/* delivery map: warm the tiles to match the site, style the pin labels */
+.pg-map {
+  background: #f1e7d3;
+  font-family: var(--font-sans);
+}
+.pg-map .leaflet-tile-pane {
+  filter: sepia(0.22) saturate(1.05) contrast(0.97);
+}
+.pg-pin {
+  background: none;
+  border: 0;
+}
+.pg-pin-label {
+  position: absolute;
+  left: 50%;
+  top: 40px;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-size: 12px;
+  font-weight: 600;
+  color: #2a211c;
+  text-shadow: 0 0 3px #fbf5ea, 0 0 3px #fbf5ea, 0 0 3px #fbf5ea, 0 0 5px #fbf5ea;
+}
+.pg-pin-label.side-l {
+  left: auto;
+  right: 26px;
+  top: 12px;
+  transform: none;
+}
+.pg-pin-label.side-r {
+  left: 26px;
+  top: 12px;
+  transform: none;
+}
+.pg-pin-label.is-active {
+  color: #7a1f45;
+}
+.pg-map .leaflet-control-attribution {
+  font-size: 10px;
+  background: rgba(251, 245, 234, 0.85);
+}
+
+/* Touch and small-screen hardening */
+@media (max-width: 1023px), (pointer: coarse) {
+  input:not([type='checkbox']):not([type='radio']),
+  select,
+  textarea {
+    font-size: 16px; /* stops iOS zooming into focused fields */
+  }
+  footer a,
+  footer button {
+    display: inline-flex;
+    min-height: 40px;
+    align-items: center;
+  }
+}
+@media (pointer: coarse) {
+  button,
+  [role='button'],
+  summary {
+    min-height: 40px;
+  }
+}
+.leaflet-container a {
+  min-height: 0 !important;
+}
+@supports (height: 100dvh) {
+  .h-screen {
+    height: 100dvh;
+  }
+}
+body {
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}

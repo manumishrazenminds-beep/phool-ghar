@@ -1,0 +1,65 @@
+# Supabase CLI configuration for Phool Ghar (local development).
+# Replace project_id if you want a different local container prefix. No secrets live here:
+# set secrets with `supabase secrets set` (see docs/PAYMENTS.md and docs/NOTIFICATIONS.md).
+project_id = "phool-ghar"
+
+[api]
+enabled = true
+port = 54321
+schemas = ["public", "storage"]
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+
+[db]
+port = 54322
+shadow_port = 54320
+major_version = 15
+
+[db.seed]
+enabled = true
+sql_paths = ["./seed.sql"]
+
+[realtime]
+enabled = true
+
+[studio]
+enabled = true
+port = 54323
+
+[inbucket]
+enabled = true
+port = 54324
+
+[storage]
+enabled = true
+file_size_limit = "5MiB"
+
+[auth]
+enabled = true
+site_url = "http://localhost:5173"
+additional_redirect_urls = ["http://localhost:5173/reset-password", "http://localhost:5173/account"]
+jwt_expiry = 3600
+enable_refresh_token_rotation = true
+refresh_token_reuse_interval = 10
+enable_signup = true
+enable_anonymous_sign_ins = false
+minimum_password_length = 8
+
+[auth.email]
+enable_signup = true
+double_confirm_changes = true
+enable_confirmations = false
+
+[edge_runtime]
+enabled = true
+policy = "oneshot"
+
+# Functions that authenticate themselves (webhook signature, CRON_SECRET) must not require a user JWT.
+[functions.razorpay-webhook]
+verify_jwt = false
+[functions.daily-scheduler]
+verify_jwt = false
+[functions.notify-dispatch]
+verify_jwt = false
+[functions.health]
+verify_jwt = false

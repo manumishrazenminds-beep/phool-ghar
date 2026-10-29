@@ -1,0 +1,12 @@
+{
+  "name": "Phool Ghar",
+  "short_name": "Phool Ghar",
+  "description": "Fresh pooja flowers, bouquets and daily flower subscriptions.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#fbf5ea",
+  "theme_color": "#fbf5ea",
+  "lang": "en-IN",
+  "icons": [{ "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }]
+}

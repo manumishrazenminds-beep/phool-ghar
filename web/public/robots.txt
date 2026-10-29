@@ -1,0 +1,16 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /delivery
+Disallow: /account
+Disallow: /checkout
+Disallow: /cart
+Disallow: /login
+Disallow: /signup
+Disallow: /forgot-password
+Disallow: /reset-password
+Disallow: /order/
+Disallow: /orders/
+
+# Replace with your real domain (scripts/seo.mjs rewrites this line at build time from VITE_SITE_URL)
+Sitemap: https://www.example.com/sitemap.xml

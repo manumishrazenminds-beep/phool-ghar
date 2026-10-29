@@ -1,0 +1,26 @@
+# Nightly database backup (PRD F-65). Free: stored as a workflow artifact for 30 days.
+# Needs the repository secret SUPABASE_DB_URL. Keep the repository PRIVATE: the dump contains customer data.
+name: db-backup
+on:
+  schedule:
+    - cron: '30 20 * * *'   # 02:00 IST
+  workflow_dispatch:
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install pg client 15
+        run: |
+          sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+          wget -qO- https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo tee /etc/apt/trusted.gpg.d/pgdg.asc >/dev/null
+          sudo apt-get update -qq && sudo apt-get install -y -qq postgresql-client-15
+      - name: Dump
+        env:
+          SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+        run: ./web/ops/backup.sh backups
+      - uses: actions/upload-artifact@v4
+        with:
+          name: db-backup
+          path: backups/*.sql.gz
+          retention-days: 30
